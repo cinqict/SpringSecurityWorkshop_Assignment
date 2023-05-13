@@ -1,12 +1,22 @@
-# CINQICT~~~~
+# Springboot Security Workshop by CINQICT~~~~
 
+This is the vanila project with no security.
 
-curls
+It is a simple CRUD application which keeps track of two Resources: Employees and LegoBoxsets
 
-Post data:
-curl -i -X POST -H "Content-Type:application/json" 'http://localhost:8080/employee' \
--d '{"firstName":"Jane","lastName":"Doo","companyId":"123456"}'
+The API specs can be found in the following files:
 
-Get data:
-curl -i -X GET 'http://localhost:8080/employee/123457'
+```
+api-employee.http
+```
 
+and
+
+```
+api-lego.http
+```
+
+Starting the application via mvn
+```
+mvn spring-boot:run
+```

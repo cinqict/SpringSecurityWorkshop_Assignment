@@ -3,7 +3,7 @@ package com.cinqict.workshop.employee;
 import com.cinqict.workshop.controller.EmployeeController;
 import com.cinqict.workshop.domain.Employee;
 import com.cinqict.workshop.repository.EmployeeRepository;
-import com.cinqict.workshop.repository.InMemoryEmployeeRepository;
+import com.cinqict.workshop.repository.implementation.InMemoryEmployeeRepository;
 import com.cinqict.workshop.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 

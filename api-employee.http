@@ -1,0 +1,35 @@
+###
+# curl -i -X POST
+#-H "Content-Type:application/json" 'http://localhost:8080/employee'
+#-d '{"firstName":"Jane","lastName":"Doo","companyId":"123456"}'
+POST http://localhost:8080/employee
+Content-Type: application/json
+
+{"firstName":"Jane","lastName":"Doo","companyId":"123456"}
+
+
+###
+# curl -i -X GET 'http://localhost:8080/employee/123456'
+GET http://localhost:8080/employee/123456
+
+
+###
+# curl -i -X GET 'http://localhost:8080/employee/123456'
+GET http://localhost:8080/employee/123456
+
+
+###
+# curl -i -X PUT
+#-H "Content-Type:application/json" 'http://localhost:8080/employee'
+#-d '{"firstName":"John","lastName":"Doo","companyId":"123456"}'
+PUT http://localhost:8080/employee
+Content-Type: application/json
+
+{"firstName":"John","lastName":"Doo","companyId":"123456"}
+
+
+####
+# curl -i -X DELETE 'http://localhost:8080/employee/123457'
+DELETE http://localhost:8080/employee/123456
+
+
