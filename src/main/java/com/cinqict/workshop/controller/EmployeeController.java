@@ -27,7 +27,7 @@ public class EmployeeController {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found"));
     }
 
-    @GetMapping("")
+    @GetMapping
     public List<Employee> retrieveAll() {
         return employeeService.retrieveAll();
     }
