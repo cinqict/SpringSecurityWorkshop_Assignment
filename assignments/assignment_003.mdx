@@ -1,0 +1,108 @@
+# Springboot Security Workshop by Cinq ICT
+
+Out-of-the-Box: Spring boot Security is auto-configures the following classes:
+ProviderManager, implements the Authentication Manager Interface
+DaoAuthenticationProvider, implements the Authentication Provider Interface
+InMemoryUserDetailsManager, implements the UserDetailsManager and UserDetailsService interfaces
+DelegatingPasswordEncoder, implements the PasswordEncoder interface
+
+By creating new Beans we can override these defaults.
+
+
+Assignment 003 - Overriding default Beans
+
+003 A: Override the default UserDetailsManager implementation:
+
+```
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService() {
+        UserDetails user = User.withDefaultPasswordEncoder()
+                .username("spring")
+                .password("password")
+                .roles("ADMIN")
+                .build();
+        UserDetails user1 = User.withDefaultPasswordEncoder()
+                .username("user")
+                .password("password")
+                .roles("USER")
+                .build();
+        return new InMemoryUserDetailsManager(user, user1);
+    }
+```
+
+003 B: Use the BCrypt Algorithm to encode the passwords.
+```
+   @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+```
+After testing it doesn't work! Passwords now need to be stored as their encoded value.
+
+```
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
+
+        UserDetails user = User.builder()
+                .username("spring")
+                .password(passwordEncoder.encode("password"))
+                .roles("ADMIN")
+                .build();
+
+        UserDetails user1 = User.builder()
+                .username("user")
+                .password(passwordEncoder.encode("password"))
+                .roles("USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(user, user1);
+    }
+```
+Passwords are no longer stored has plain text. Only the hash values.e.g. as <key><hashvalue>
+"{bcrypt}$2a$10$7tYAvVL2/KwcQTcQywHIleKueg4ZK7y7d44hKyngjTwHCDlesxdla"
+"{sha256}1296cefceb47413d3fb91ac7586a4625c33937b4d3109f5a4dd96c79c46193a029db713b96006ded"
+
+
+003 C: Using multiple different encoding algorithms (Delagating Password Encoder):
+
+```
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+```
+
+You can now use multiple different encoders. Useful for integration with legacy systems.
+Check out the implementation of the createDelegatingPasswordEncoder methode. If more/other encoders needed,
+create your own version of the 'PasswordEncoderFactories' class.
+
+```
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
+
+        UserDetails user = User.builder()
+                .username("spring")
+                .password(passwordEncoder().encode("password"))
+                .roles("ADMIN")
+                .build();
+
+        UserDetails user1 = User.builder()
+                .username("user")
+                .password("{ldap}"+new LdapShaPasswordEncoder().encode("password"))
+                .roles("USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(user, user1);
+    }
+```
+
+
+003 D: Bonus encode and decode strings using other decoders:
+https://docs.spring.io/spring-security/reference/features/authentication/password-storage.html#authentication-password-storage-bcrypt
+
+003 E: Bonus try to create a bean which override the the 'PasswordEncoderFactories' class.
+
+Start the application via mvn
+```
+mvn spring-boot:run
+```

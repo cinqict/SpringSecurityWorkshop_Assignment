@@ -1,0 +1,55 @@
+# Springboot Security Workshop by Cinq ICT
+
+Assignment 002 - Path Matchers
+
+Spring Security allows you to model your authorization at the request level.
+For example, with Spring Security you can say that all pages under /admin require one authority while all other pages simply require authentication.
+
+By default, Spring Security requires that every request be authenticated. That said, any time you use an HttpSecurity instance, it’s necessary to declare your authorization rules.
+
+There are different ways to declare the authentication:
+- Ant matchers
+- Regex
+- Http
+- more
+
+More info see: https://docs.spring.io/spring-security/reference/servlet/authorization/authorize-http-requests.html
+
+002 A: Ant Matchers
+
+e.g.
+```
+http
+    .authorizeHttpRequests((authorize) -> authorize
+        .requestMatchers("/resource/**").authenticated()
+        .anyRequest().authenticated()
+    )
+```
+
+002 B: Regex Matchers
+```
+http
+    .authorizeHttpRequests((authorize) -> authorize
+        .requestMatchers(RegexRequestMatcher.regexMatcher("/resource/[A-Za-z0-9]+")).authenticated()
+        .anyRequest().denyAll()
+    )
+```
+
+002 C: Http Method
+```
+http
+    .authorizeHttpRequests((authorize) -> authorize
+        .requestMatchers(HttpMethod.GET).permitAll()
+        .anyRequest().authenticated();
+    )
+```
+
+002 D: Bonus Unit tests
+
+Use Mockmvc to mock test some endpoints with your custom security.
+
+
+Start the application via mvn
+```
+mvn spring-boot:run
+```
